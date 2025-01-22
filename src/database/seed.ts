@@ -224,6 +224,7 @@ async function bootstrap() {
         companyName: company.name,
         companyCoordinates: bulgarianLocations[partners.length].coordinates,
         phoneNumber: generateBulgarianPhoneNumber(),
+        subscriptionStatus: "active"
       }),
     );
   }
