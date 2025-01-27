@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import * as bodyParser from 'body-parser';
 import * as express from 'express';
+import { EmailTemplateService } from './emails/email-templates/email-templates.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -30,6 +31,9 @@ async function bootstrap() {
       transform: true,
     }),
   );
+
+  // Seed with default email templates if they don't exist
+  await EmailTemplateService.initEmailTemplates();
 
   const port = process.env.PORT || 3030;
   await app.listen(port);

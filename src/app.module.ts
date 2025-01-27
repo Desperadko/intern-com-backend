@@ -10,6 +10,7 @@ import { UsersModule } from './users/users.module';
 import { ApplicationsModule } from './applications/applications.module';
 import { SubscriptionsModule } from './subscriptions/subscriptions.module';
 import { StripeWebhookMiddleware } from './middlewares/stripe-webhook.middleware';
+import { EmailTemplatesModule } from './emails/email-templates/email-templates.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { StripeWebhookMiddleware } from './middlewares/stripe-webhook.middleware
     UsersModule,
     ApplicationsModule,
     SubscriptionsModule,
+    EmailTemplatesModule,
   ],
 })
 export class AppModule implements NestModule {

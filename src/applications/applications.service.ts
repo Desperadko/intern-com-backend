@@ -200,6 +200,8 @@ export class ApplicationsService {
 
     Object.assign(application, updateApplicationDto);
 
+    //application.candidate.email;
+
     return this.applicationRepository.save(application);
   }
 
