@@ -5,13 +5,10 @@ import { EmailTemplateDto } from "./dto/email-templates.dto";
 
 @Injectable()
 export class EmailTemplateService{
-    private static readonly templatesDir = join(process.cwd(), 'storage', 'templates')
-    private static readonly acceptedFilePath = join(EmailTemplateService.templatesDir, 'accepted.json');
-    private static readonly rejectedFilePath = join(EmailTemplateService.templatesDir, 'rejected.json');
 
-    async getEmailTemplate(type: string): Promise<EmailTemplateDto>{
+    async getEmailTemplateAsync(type: string): Promise<EmailTemplateDto>{
 
-        const filePath = EmailTemplateService.getFilePath(type);
+        const filePath = this.getFilePath(type);
 
         try{
             const fileContent = await fs.readFile(filePath, 'utf-8');
@@ -23,9 +20,9 @@ export class EmailTemplateService{
         }
     }
 
-    async saveEmailTemplate(type: string, template: EmailTemplateDto): Promise<{ message: string }>{
+    async saveEmailTemplateAsync(type: string, template: EmailTemplateDto): Promise<{ message: string }>{
 
-        const filePath = EmailTemplateService.getFilePath(type);
+        const filePath = this.getFilePath(type);
 
         try{
             await fs.writeFile(filePath, JSON.stringify(template, null, 2), 'utf-8');
@@ -37,13 +34,13 @@ export class EmailTemplateService{
         }
     }
 
-    static async initEmailTemplates(): Promise<void>{
+    async initEmailTemplates(): Promise<void>{
         
         const defaultTemplateValues = { subject: "Default Subject", message: "Default Message" };
 
         try{
 
-            await fs.mkdir(join(EmailTemplateService.templatesDir), {recursive: true});
+            await fs.mkdir(join(this.templatesDir), {recursive: true});
 
             try{
                 await fs.access(this.acceptedFilePath);
@@ -65,7 +62,17 @@ export class EmailTemplateService{
         }
     }
 
-    private static getFilePath(type: string){
+    private get templatesDir(): string {
+        return process.env.TEMPLATES_PATH;
+    } 
+    private get acceptedFilePath(): string {
+        return process.env.ACCEPTED_TEMPLATE_PATH;
+    }
+    private get rejectedFilePath(): string {
+        return process.env.REJECTED_TEMPLATE_PATH;
+    }
+
+    private getFilePath(type: string){
         return type === 'accepted' ? this.acceptedFilePath : this.rejectedFilePath;
     }
 }

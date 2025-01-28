@@ -19,7 +19,7 @@ export class EmailTemplateController{
         if(type !== 'accepted' && type !== 'rejected'){
             throw new BadRequestException('Invalid template type');
         }
-        return this.emailTemplateService.getEmailTemplate(type);
+        return this.emailTemplateService.getEmailTemplateAsync(type);
     }
 
     @Post()
@@ -33,6 +33,6 @@ export class EmailTemplateController{
         if(!template.subject || !template.message){
             throw new BadRequestException('Template must include subject and message');
         }
-        return this.emailTemplateService.saveEmailTemplate(type, template);
+        return this.emailTemplateService.saveEmailTemplateAsync(type, template);
     }
 }

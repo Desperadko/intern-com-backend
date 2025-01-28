@@ -33,7 +33,8 @@ async function bootstrap() {
   );
 
   // Seed with default email templates if they don't exist
-  await EmailTemplateService.initEmailTemplates();
+  const emailTemplateService = app.get(EmailTemplateService);
+  await emailTemplateService.initEmailTemplates();
 
   const port = process.env.PORT || 3030;
   await app.listen(port);

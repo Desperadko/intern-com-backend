@@ -12,6 +12,7 @@ import { Opportunity } from '../entities/opportunity.entity';
 import { CreateApplicationDto } from './dto/create-application.dto';
 import { UpdateApplicationDto } from './dto/update-application.dto';
 import { SubscriptionsService } from '../subscriptions/subscriptions.service';
+import { EmailerService } from 'src/emails/emailer.service';
 
 @Injectable()
 export class ApplicationsService {
@@ -23,6 +24,7 @@ export class ApplicationsService {
     @InjectRepository(Opportunity)
     private readonly opportunityRepository: Repository<Opportunity>,
     private readonly subscriptionsService: SubscriptionsService,
+    private readonly emailerService: EmailerService,
   ) {}
 
   async create(
@@ -200,7 +202,15 @@ export class ApplicationsService {
 
     Object.assign(application, updateApplicationDto);
 
-    //application.candidate.email;
+    await this.emailerService.sendEmailAsync(
+      updateApplicationDto.status,
+      application.candidate.firstName,
+      application.opportunity.company.companyName,
+      application.candidate.email,
+      application.opportunity.company.email,
+      application.opportunity.title,
+      updateApplicationDto.note
+    );
 
     return this.applicationRepository.save(application);
   }
