@@ -7,11 +7,13 @@ import { ApplicationsService } from '../applications/applications.service';
 import { Application } from '../entities/application.entity';
 import { Opportunity } from '../entities/opportunity.entity';
 import { SubscriptionsService } from '../subscriptions/subscriptions.service';
+import { EmailerService } from 'src/emails/emailer.service';
+import { EmailTemplateService } from 'src/emails/email-templates/email-templates.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User, Application, Opportunity])],
   controllers: [UsersController],
-  providers: [UsersService, ApplicationsService, SubscriptionsService],
+  providers: [UsersService, ApplicationsService, SubscriptionsService, EmailerService, EmailTemplateService],
   exports: [UsersService],
 })
 export class UsersModule {}
